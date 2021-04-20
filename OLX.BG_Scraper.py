@@ -25,7 +25,7 @@ pd.set_option('display.max_colwidth', None)
 # In[ ]:
 
 
-##-creating dictionaries-##
+##-Creating dictionaries-##
 category_set = ['Computers', 'Phone_Parts', 'Air_Conditioners', 'PC_Accessories', 'Televisions', 'Photo_Video', 
                 'Tablets', 'Audio', 'Navigation', 'Phones', 'Home_Utilities', 'Miscellaneous']
 page_category = ['https://www.olx.bg/elektronika/kompyutri/?page=',
@@ -48,7 +48,7 @@ df_list = ["df" + str(i) for i in range(1,26)]
 # In[ ]:
 
 
-##-providing the end-user with a paginated list of categories to choose from-##
+##-Providing the end-user with a paginated list of categories to choose from-##
 pgn_index = -1
 print("Please select a number for the Electronics category you'd like to scrape.")
 for x in page_category:
@@ -59,7 +59,7 @@ for x in page_category:
 # In[ ]:
 
 
-##-taking user input-##
+##-Taking user input-##
 user_category = input()
 user_category = int(user_category)
 user_category = user_category - 1
@@ -68,7 +68,7 @@ user_category = user_category - 1
 # In[ ]:
 
 
-##-creating placeholder dataframes-##
+##-Generating placeholder dataframes-##
 cat_index = 0
 category_set[cat_index] = [x + "_" + category_set[user_category] for x in df_list]
 
@@ -76,24 +76,24 @@ category_set[cat_index] = [x + "_" + category_set[user_category] for x in df_lis
 # In[ ]:
 
 
-##-setting indices to loop through every page in the respective category (25 pages per default)-##
+##-Setting indices to loop through every page in the respective category (25 pages per default)-##
 page_number = 0
 cat_index = 0
 df_index = -1
 
 try:
     while df_index < 24:
-        ##-setting the indices for iteration-##
+        ##-Setting the indices for iteration-##
         df_index += 1
         page_number += 1
         
-        ##-web-scraping-##
+        ##-Web-scraping-##
         url = (page_category[user_category] + str(page_number))
         reqs = requests.get(url + str(page_number))
         soup = BeautifulSoup(reqs.content, 'html.parser')
         results = soup.find_all('strong')
         
-        ##-converting scraped results to string; erasing tags, cleansing data; filtering lists-##
+        ##-Converting scraped results to string; erasing tags, cleansing data; filtering lists-##
         resultslist = str(results)
         resultslist = resultslist.split("</strong>,")
         resultslist = resultslist[3:-6] 
@@ -102,7 +102,7 @@ try:
         prices = resultslist[1::2]
         prices = [e[:-4] for e in prices] 
         
-        ##-creating the dataframe and assigning the lists' values to the columns-##
+        ##-Creating the dataframe and assigning the lists' values to the columns-##
         category_set[cat_index][df_index] = pd.DataFrame(columns = ['Item Name','Item Price'])
         category_set[cat_index][df_index]['Item Name'] = pd.Series(items)
         category_set[cat_index][df_index]['Item Price'] = pd.Series(prices)
@@ -113,7 +113,7 @@ pass
 # In[ ]:
 
 
-##-appending oll dataframes to a single set-##
+##-Appending all dataframes to a single set-##
 cat_index = 0
 combined_data = category_set[cat_index][cat_index].append([    
             category_set[cat_index][1], category_set[cat_index][2], category_set[cat_index][3], category_set[cat_index][4],
@@ -128,7 +128,7 @@ combined_data = category_set[cat_index][cat_index].append([
 # In[ ]:
 
 
-##-dropping duplicates, adding a currency column, defining float type, rounding output to second decimal point-##
+##-Dropping duplicates, adding a currency column, defining float type, rounding output to the second decimal point-##
 combined_data = combined_data.drop_duplicates()
 combined_data['Currency'] = 'BGN'
 combined_data['Item Price'] = combined_data['Item Price'].astype(float)
@@ -139,13 +139,13 @@ combined_data
 # In[ ]:
 
 
-##-a function for Excel's column width-##
+##-A function for Excel's column width-##
 def format_col_width(ws):
     ws.set_column('A:A', 75)
     ws.set_column('B:B', 25)
     ws.set_column('C:C', 25)
 
-##-exporting the results to an .xlsx file-##
+##-Exporting the results to an .XLSX file-##
 writer = pd.ExcelWriter(formated_date +  '_OLX_BG_' + category_set[user_category] + '_Category' + '.xlsx', engine='xlsxwriter') 
 combined_data.to_excel(writer, sheet_name=category_set[user_category], index=False)
 workbook  = writer.book
