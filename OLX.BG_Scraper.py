@@ -113,12 +113,6 @@ pass
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
 ##-appending oll dataframes to a single set-##
 cat_index = 0
 combined_data = category_set[cat_index][cat_index].append([    
@@ -158,4 +152,3 @@ workbook  = writer.book
 worksheet = writer.sheets[category_set[user_category]]
 format_col_width(worksheet)
 writer.save()
-
