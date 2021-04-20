@@ -68,7 +68,7 @@ user_category = user_category - 1
 # In[ ]:
 
 
-##-Generating placeholder dataframes-##
+##-Generating a placeholder-list for dataframes-##
 cat_index = 0
 category_set[cat_index] = [x + "_" + category_set[user_category] for x in df_list]
 
@@ -113,20 +113,9 @@ pass
 # In[ ]:
 
 
-##-Appending all dataframes to a single set-##
+##-Appending all dataframes to a single dataset-##
 cat_index = 0
-combined_data = category_set[cat_index][cat_index].append([    
-            category_set[cat_index][1], category_set[cat_index][2], category_set[cat_index][3], category_set[cat_index][4],
-            category_set[cat_index][5], category_set[cat_index][6], category_set[cat_index][7], category_set[cat_index][8],
-            category_set[cat_index][9], category_set[cat_index][10], category_set[cat_index][11], category_set[cat_index][12],
-            category_set[cat_index][13], category_set[cat_index][14], category_set[cat_index][15], category_set[cat_index][16],
-            category_set[cat_index][17], category_set[cat_index][18], category_set[cat_index][19], category_set[cat_index][20],
-            category_set[cat_index][21], category_set[cat_index][22], category_set[cat_index][23], category_set[cat_index][24],
-        ])
-
-
-# In[ ]:
-
+combined_data = pd.concat(category_set[cat_index])    
 
 ##-Dropping duplicates, adding a currency column, defining float type, rounding output to the second decimal point-##
 combined_data = combined_data.drop_duplicates()
@@ -134,7 +123,6 @@ combined_data['Currency'] = 'BGN'
 combined_data['Item Price'] = combined_data['Item Price'].astype(float)
 combined_data['Item Price'] = combined_data['Item Price'].round(2)
 combined_data
-
 
 # In[ ]:
 
